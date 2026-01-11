@@ -10,9 +10,25 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+        // If not logged in → redirect
+        if (!Auth::check()) {
+            return redirect('/login');
         }
-        return redirect('/login')->with('error', 'Unauthorized access.');
+
+        // If user is blocked → logout & redirect
+        if (Auth::user()->is_blocked) {
+            Auth::logout();
+
+            return redirect('/login')
+                ->withErrors(['email' => 'Your account has been blocked by admin.']);
+        }
+
+        // If user is not admin → redirect
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/login')
+                ->with('error', 'Unauthorized access.');
+        }
+
+        return $next($request);
     }
 }

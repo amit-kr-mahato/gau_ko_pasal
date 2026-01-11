@@ -11,6 +11,8 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,30 +38,52 @@ Route::post('/logout', [UserController::class,'logout'])->name('logout');
 | Role-based Dashboard Routes
 |--------------------------------------------------------------------------
 */
-
 // ADMIN ROUTES
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class,'index'])->name('admin.dashboard');
-    Route::get('/orders', [AdminController::class,'orders'])->name('admin.orders');
-    Route::get('/users', [AdminController::class,'users'])->name('admin.users');
-    Route::get('/vendors', [AdminController::class,'vendors'])->name('admin.vendors');
-    // Add category
-    Route::get('/add-category', [AdminController::class,'addcategory'])->name('admin.category.add');
-    Route::post('/add-category', [AdminController::class,'storeCategory'])->name('admin.category.store');
- // View Category
-    Route::get('/view-category', [AdminController::class,'viewcategory'])->name('admin.viewcategory');
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    // Edit Category
-    Route::get('/edit-category/{id}', [AdminController::class,'editcategory'])->name('admin.category.edit');
-    Route::post('/update-category/{id}', [AdminController::class,'updateCategory'])->name('admin.category.update');
+    Route::get('/dashboard', [AdminController::class,'index'])->name('dashboard');
+    Route::get('/orders', [AdminController::class,'orders'])->name('orders');
+    Route::get('/users', [AdminController::class,'users'])->name('users');
+    Route::get('/vendors', [AdminController::class,'vendors'])->name('vendors');
 
-    // Delete Category
-    Route::get('/delete-category/{id}', [AdminController::class,'deletecategory'])->name('admin.category.delete');
+    // ===== CATEGORY =====
+    Route::get('/add-category', [AdminController::class,'addcategory'])->name('category.add');
+    Route::post('/add-category', [AdminController::class,'storeCategory'])->name('category.store');
+    Route::get('/view-category', [AdminController::class,'viewcategory'])->name('category.view'); // make it consistent
+    Route::get('/edit-category/{id}', [AdminController::class,'editcategory'])->name('category.edit');
+    Route::post('/update-category/{id}', [AdminController::class,'updateCategory'])->name('category.update');
+    Route::get('/delete-category/{id}', [AdminController::class,'deletecategory'])->name('category.delete');
 
-    // Route::get('/view-category', [AdminController::class,'viewcategory'])->name('admin.category.view');
-    // Route::get('/edit-category', [AdminController::class,'editcategory'])->name('admin.category.edit');
-    Route::get('/order-detail', [AdminController::class,'orderdetail'])->name('admin.order.detail');
+    // ===== PRODUCTS =====
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');   // ✅ no "admin." prefix needed
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+
+     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+
+    // Update profile
+    Route::post('/settings/profile', [AdminController::class, 'updateProfile'])->name('settings.profile');
+
+    // Change password
+    Route::post('/settings/password', [AdminController::class, 'changePassword'])->name('settings.password');
+
+    // Update store settings
+    Route::post('/settings/store', [AdminController::class, 'updateStore'])->name('settings.store');
+
+    // Update notifications
+    Route::post('/settings/notifications', [AdminController::class, 'updateNotifications'])->name('settings.notifications');
+
+    // Update SEO & social
+    Route::post('/settings/seo', [AdminController::class, 'updateSeo'])->name('settings.seo');
+
 });
+
+
+
 
 
 

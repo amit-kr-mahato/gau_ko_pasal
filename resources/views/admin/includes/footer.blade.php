@@ -1,7 +1,7 @@
 <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Vendomart 2024. Developed by <a href="#" class="text-decoration-none">Code Artisan Lab</a></div>
+                    <div class="text-muted">Copyright &copy; GauKoPasal 2026. Developed by <a href="#" class="text-decoration-none">Amit kumar mahato</a></div>
                     <!-- <div>
                         <a href="#">Privacy Policy</a>
                         &middot;

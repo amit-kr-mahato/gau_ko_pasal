@@ -3,4 +3,7 @@
 
 @yield('content')
 
+@stack('scripts')
+
+
 @include('admin.includes.footer')
